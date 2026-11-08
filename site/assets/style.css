@@ -464,7 +464,13 @@ dialog.sheet-dialog::backdrop { background: rgba(3, 10, 15, 0.7); -webkit-backdr
   .lake-columns { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 520px) {
-  .species-grid, .teaser-grid { grid-template-columns: minmax(0, 1fr); }
+  .teaser-grid { grid-template-columns: minmax(0, 1fr); }
+  .species-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .species-tile { padding: 14px; }
+  .species-tile .sp-name { font-size: 1.2rem; }
+  .hero-map { aspect-ratio: auto; display: grid; }
+  .hero-map canvas { aspect-ratio: 1.08 / 1; height: auto; }
+  .hero-map .map-caption { position: static; padding: 10px 14px 12px; }
   .filters { grid-template-columns: minmax(0, 1fr); }
   .field-row { grid-template-columns: minmax(0, 1fr); }
   .stats { grid-template-columns: minmax(0, 1fr); }

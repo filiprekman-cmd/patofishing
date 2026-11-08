@@ -16,39 +16,23 @@ użytkownicy wrzucają zdjęcia ryb z wymiarami. Właściciel pisze po polsku, o
 - Ostatnia prośba: „premium design”, różnorodne kolory, lepsze boxy, animacje z umiarem,
   mniej rzeczy na jednym ekranie (osobne widoki).
 
-## Stan prac (WAŻNE)
+## Stan prac
 
-Trwa przebudowa wyglądu. Gotowe są już NOWE pliki:
-- `site/assets/style.css`: ciemny motyw „nocne jezioro”, fonty DM Serif Display + Manrope
-  (w `site/fonts/`), akcenty: aqua, sky, amber, coral, reed, sand.
-- `site/index.html`: nowa struktura z widokami `#view-start`, `#view-explore`, `#view-lake`,
-  `#view-catches` i formularzem połowu w `<dialog id="catch-dialog">`.
-
-NIE są jeszcze dostosowane (pasują do starego HTML i obecnie nie zadziałają):
-- `site/assets/app.js`: do napisania od nowa pod nowy HTML. Plan:
-  - routing po hashu: `#start` (domyślny), `#jeziora`, `#j<pageid>` (strona jeziora), `#polowy`;
-  - Start: hero z wyszukiwarką i podpowiedziami (`#hero-q`, `#hero-suggest`), fakty (`#facts`,
-    `#updated`, `#hero-count`), mapa `#hero-map` z jednorazową animacją „zapalania się” punktów,
-    zestawienia `#rankings` (najgłębsze, największe, najwięcej ryb w artykule; top 5 z danych),
-    kafelki gatunków `#species-grid` (top 8, bez wpisów „bez podania gatunku”);
-  - Jeziora: filtry `#f-q #f-voiv #f-kind #f-fish #f-sort #f-onlyfish`, lista kart `#results`
-    (po 40, `#more-btn`), mapa `#map` z przyciskami `#zoom-in/out/reset` (bez zoomu kółkiem),
-    przełącznik Lista/Mapa na telefonie (`#mode-list`, `#mode-map`, atrybut `data-mode`);
-  - Strona jeziora: `#lake-hero` (nazwa, mapka-lokalizator z pulsującym „sygnałem echosondy”),
-    `#lake-body` (4 kafelki `.stat` z `--accent`, wskaźnik głębokości `.gauge` względem
-    najgłębszego jeziora w bazie, ryby, cytaty w `<details>`, uwagi `.warn`, kontener na połowy,
-    linki do Wikipedii i OpenStreetMap);
-  - eksport `window.patofishing` dla `catches.js` (ready, state, h, fold, formatDate, plural,
-    numberFmt, collator, onLakeSelected, showView, applyHash, catchesEnabled).
-- `site/assets/catches.js`: działa logicznie, ale trzeba go przepiąć na `<dialog>` (otwieranie
-  `showModal()`, `#c-close`), dodać zapowiedź na Starcie (`#start-catches`) i nowe klasy kart
-  (`.card .card-link`, `.photo-wrap` z plakietką długości).
-- `site/o-danych.html`, `site/polityka-prywatnosci.html`, `site/regulamin.html`: mają stary
-  nagłówek (`.site-header`, `.brand`), trzeba przenieść na nowy (`.nav`, `.prose-wrap`).
-
-Ostatnia DZIAŁAJĄCA wersja (stary jasny wygląd) jest w `archiwum/wersja-1-claude-ai/`
-(to dokładnie to, co jest opublikowane jako Artifact). Stamtąd można wziąć logikę mapy na
-canvasie, filtrów, karty jeziora i połowów.
+Przebudowa wyglądu jest skończona i przetestowana (Playwright: komputer i telefon, bez błędów
+w konsoli, bez poziomego przewijania, dodawanie i usuwanie połowu na atrapie środowiska).
+- `site/assets/style.css`: jeden ciemny motyw „nocne jezioro”, fonty DM Serif Display + Manrope
+  (w `site/fonts/`), akcenty: aqua, sky, amber, coral, reed, sand. Głębokość na mapach: rampa
+  `--d1`..`--d5` sprawdzona walidatorem kontrastu.
+- `site/index.html`: widoki `#view-start`, `#view-explore`, `#view-lake`, `#view-catches`,
+  formularz połowu w `<dialog id="catch-dialog">`.
+- `site/assets/app.js`: routing po hashu `#start`, `#jeziora`, `#j<pageid>`, `#polowy`;
+  mapy na canvasie (`createMap`): hero z animacją pojawiania się punktów, wyszukiwarka
+  z przesuwaniem i przybliżaniem przyciskami, lokalizator na stronie jeziora z pulsującym
+  sygnałem. Eksportuje `window.patofishing` dla `catches.js`.
+- `site/assets/catches.js`: galeria, formularz w oknie dialogowym, zapowiedź na Starcie,
+  połowy na stronie jeziora (`#lake-catches`). Zdjęcie jest zmniejszane do 1600 px i
+  przekodowane przez canvas, co usuwa EXIF i GPS.
+- `archiwum/wersja-1-claude-ai/`: pierwsza (jasna) wersja, tylko do wglądu.
 
 ## Dane
 
@@ -83,7 +67,5 @@ canvasie, filtrów, karty jeziora i połowów.
 
 ## Do zrobienia
 
-1. Dokończyć przebudowę (app.js, catches.js, podstrony), przetestować w Playwright
-   (komputer i telefon, brak błędów w konsoli, brak poziomego przewijania).
-2. Własna domena (właściciel musi ją podać), uzupełnić `[UZUPEŁNIJ]` w polityce i regulaminie.
-3. Backend na zdjęcia dla wersji na własnej domenie.
+1. Własna domena (właściciel musi ją podać), uzupełnić `[UZUPEŁNIJ]` w polityce i regulaminie.
+2. Backend na zdjęcia dla wersji na własnej domenie.

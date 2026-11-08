@@ -45,6 +45,7 @@
     subscribe();
     P.onLakeSelected(renderLakeCatches);
     renderLakeCatches(P.state.selected);
+    renderStartTeaser();
     if (location.hash === "#polowy") P.applyHash();
   }
 
@@ -126,6 +127,7 @@
       entries.sort((a, b) => (b.item.created || "").localeCompare(a.item.created || ""));
       renderGallery();
       renderLakeCatches(P.state.selected);
+      renderStartTeaser();
     }, (error) => {
       clearTimeout(timer);
       loaded = true;
@@ -246,7 +248,9 @@
       reset();
       body.append(actions);
     }
-    return h("li", { class: "catch-card" }, photo(item, "catch-photo"), body);
+    return h("li", { class: "card card-link catch-card" },
+      h("div", { class: "photo-wrap" }, photo(item, "catch-photo"), h("span", { class: "badge num", text: `${decimal.format(item.length)} cm` })),
+      body);
   }
 
   async function remove(entry, actions) {
@@ -266,11 +270,11 @@
 
   // ---------------------------------------------------------------- record sheet integration
   function renderLakeCatches(lake) {
-    const box = document.getElementById("sheet-catches");
+    const box = document.getElementById("lake-catches");
     if (!box || !lake) return;
     const forLake = entries.filter((e) => e.item.lakeId === lake.id);
     if (!forLake.length && !canAdd()) { box.hidden = true; return; }
-    const children = [h("h3", { text: forLake.length ? `Połowy z tego jeziora (${forLake.length})` : "Połowy z tego jeziora" })];
+    const children = [h("h2", { text: forLake.length ? `Połowy (${forLake.length})` : "Połowy" })];
     if (forLake.length) {
       children.push(h("ul", { class: "catch-thumbs" }, ...forLake.slice(0, 6).map((e) =>
         h("li", null, h("a", { href: "#polowy", onclick: () => { filterLake = lake.id; renderGallery(); } },
@@ -279,16 +283,33 @@
     } else {
       children.push(h("p", { class: "muted", text: "Nikt jeszcze nie dodał połowu z tego jeziora." }));
     }
-    const actions = h("div", { class: "links" });
+    const actions = h("div", { class: "source-links" });
     if (forLake.length) {
-      actions.append(h("a", { href: "#polowy", text: "Zobacz wszystkie", onclick: () => { filterLake = lake.id; renderGallery(); } }));
+      actions.append(h("a", { class: "btn btn-small", href: "#polowy", text: "Zobacz wszystkie", onclick: () => { filterLake = lake.id; renderGallery(); } }));
     }
     if (canAdd()) {
-      actions.append(h("a", { href: "#polowy", text: "Dodaj połów z tego jeziora", onclick: () => openForm(lake) }));
+      actions.append(h("button", { type: "button", class: "btn btn-small btn-primary", onclick: () => openForm(lake) }, P.icon("camera"), "Dodaj połów z tego jeziora"));
     }
     children.push(actions);
     box.replaceChildren(...children);
     box.hidden = false;
+  }
+
+  // ---------------------------------------------------------------- start page teaser
+  function renderStartTeaser() {
+    const section = document.getElementById("start-catches");
+    const body = document.getElementById("start-catches-body");
+    if (!section || !body) return;
+    section.hidden = false;
+    if (entries.length) {
+      body.replaceChildren(h("ul", { class: "catch-grid teaser-grid" }, ...entries.slice(0, 4).map(card)));
+    } else {
+      body.replaceChildren(h("div", { class: "card cta-card" },
+        h("div", null, h("h3", { text: "Pochwal się rybą" }),
+          h("p", { class: "muted", text: "Dodaj zdjęcie, gatunek, długość i wagę. Dane GPS ze zdjęcia usuwamy przed wysłaniem." })),
+        canAdd() ? h("button", { type: "button", class: "btn btn-primary", onclick: () => { location.hash = "polowy"; openForm(null); } }, P.icon("camera"), "Dodaj połów")
+          : h("a", { class: "btn", href: "#polowy", text: "Zobacz połowy" })));
+    }
   }
 
   // ---------------------------------------------------------------- form
@@ -340,26 +361,28 @@
     });
     $("#c-date").max = today();
     $("#c-cancel").addEventListener("click", closeForm);
+    $("#c-close").addEventListener("click", closeForm);
+    $("#catch-dialog").addEventListener("click", (event) => { if (event.target.id === "catch-dialog") closeForm(); });
     $("#catch-form").addEventListener("submit", submit);
   }
 
   function openForm(lake) {
     if (!canAdd()) return;
-    const form = $("#catch-form");
-    form.hidden = false;
+    const dialog = $("#catch-dialog");
+    if (!dialog.open) {
+      if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
+    }
     $("#c-date").max = today();
     if (!$("#c-date").value) $("#c-date").value = today();
     if (lake) $("#c-lake").value = lakeLabel(lake);
     $("#c-status").textContent = "";
     showError("");
-    requestAnimationFrame(() => {
-      form.scrollIntoView({ behavior: "smooth", block: "start" });
-      $("#c-photo").focus({ preventScroll: true });
-    });
+    requestAnimationFrame(() => $("#c-photo").focus({ preventScroll: true }));
   }
 
   function closeForm() {
-    $("#catch-form").hidden = true;
+    const dialog = $("#catch-dialog");
+    if (dialog.open) { if (typeof dialog.close === "function") dialog.close(); else dialog.removeAttribute("open"); }
   }
 
   function showError(message) {
@@ -507,6 +530,7 @@
       $("#c-species-other-field").hidden = true;
       $("#c-date").value = today();
       status.textContent = "Dodano połów.";
+      setTimeout(() => { closeForm(); status.textContent = ""; }, 900);
       filterLake = null;
       renderGallery();
     } catch (error) {

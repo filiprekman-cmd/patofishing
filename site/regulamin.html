@@ -8,23 +8,37 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#06121b">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<header class="site-header">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+</svg>
+
+<header class="nav">
   <div class="wrap">
-    <a class="brand" href="./" aria-label="patofishing, strona główna">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c0-6 5-11 12-11 6 0 10 4 10 9 0 6-5 11-12 11C9 26 5 22 5 17z" fill="var(--d2)"/><path d="M10 17c0-3.5 3-6.5 7-6.5 3.5 0 6 2.4 6 5.3 0 3.6-3 6.7-7 6.7-3.5 0-6-2.3-6-5.5z" fill="var(--d4)"/><path d="M14.5 16.8c0-1.4 1.2-2.6 2.8-2.6 1.4 0 2.4 1 2.4 2.2 0 1.5-1.2 2.7-2.8 2.7-1.4 0-2.4-1-2.4-2.3z" fill="var(--d5)"/></svg>
+    <a class="brand" href="./#start" aria-label="patofishing, strona startowa">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c0-6 5-11 12-11 6 0 10 4 10 9 0 6-5 11-12 11C9 26 5 22 5 17z" fill="#256abf"/><path d="M10 17c0-3.5 3-6.5 7-6.5 3.5 0 6 2.4 6 5.3 0 3.6-3 6.7-7 6.7-3.5 0-6-2.3-6-5.5z" fill="#3fd0c2"/><path d="M14.5 16.8c0-1.4 1.2-2.6 2.8-2.6 1.4 0 2.4 1 2.4 2.2 0 1.5-1.2 2.7-2.8 2.7-1.4 0-2.4-1-2.4-2.3z" fill="#eaf2f6"/></svg>
       <span>patofishing</span>
     </a>
-    <nav class="site-nav" aria-label="Główne">
-      <a href="./">Jeziora</a>
+    <nav class="nav-links" aria-label="Główne">
+      <a href="./#start" data-nav="start">Start</a>
+      <a href="./#jeziora" data-nav="jeziora">Jeziora</a>
       <a href="o-danych.html">O danych</a>
     </nav>
   </div>
 </header>
-<main class="page">
-  <div class="wrap">
+<main>
+  <div class="wrap prose-wrap">
     <article class="prose">
       <h1>Regulamin</h1>
       <p class="todo">Przed publikacją strony uzupełnij pola oznaczone [UZUPEŁNIJ] i usuń tę ramkę.</p>
@@ -81,9 +95,9 @@
     </article>
   </div>
 </main>
-<footer class="site-footer">
+<footer class="footer">
   <div class="wrap">
-    <p>Dane o jeziorach: polska Wikipedia, licencja CC BY-SA 4.0.</p>
+    <p>Dane o jeziorach: polska Wikipedia, licencja CC BY-SA 4.0, z linkiem do artykułu przy każdym jeziorze. Informacje mają charakter poglądowy: przed wędkowaniem sprawdź zezwolenie i regulamin łowiska.</p>
     <nav aria-label="Informacje">
       <a href="o-danych.html">O danych</a>
       <a href="polityka-prywatnosci.html">Polityka prywatności</a>
