@@ -1,0 +1,197 @@
+<title>patofishing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Głębokość, powierzchnia i gatunki ryb w polskich jeziorach i zbiornikach, z cytatem źródła przy każdej informacji o rybach. Dane z polskiej Wikipedii, odświeżane co 3 miesiące.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/style.css">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="patofishing, strona główna">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c0-6 5-11 12-11 6 0 10 4 10 9 0 6-5 11-12 11C9 26 5 22 5 17z" fill="var(--d2)"/><path d="M10 17c0-3.5 3-6.5 7-6.5 3.5 0 6 2.4 6 5.3 0 3.6-3 6.7-7 6.7-3.5 0-6-2.3-6-5.5z" fill="var(--d4)"/><path d="M14.5 16.8c0-1.4 1.2-2.6 2.8-2.6 1.4 0 2.4 1 2.4 2.2 0 1.5-1.2 2.7-2.8 2.7-1.4 0-2.4-1-2.4-2.3z" fill="var(--d5)"/></svg>
+      <span>patofishing</span>
+    </a>
+    <nav class="site-nav" aria-label="Główne">
+      <a href="#" data-nav="jeziora" aria-current="page">Jeziora</a>
+      <a href="#polowy" data-nav="polowy" id="nav-catches" hidden>Połowy</a>
+      <a href="o-danych.html">O danych</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro" id="intro" aria-labelledby="intro-title">
+    <div class="wrap">
+      <h1 id="intro-title">Głębokość i ryby polskich jezior</h1>
+      <p>Wyszukaj jezioro albo zbiornik, sprawdź jego głębokość i powierzchnię oraz ryby, które wymienia artykuł w polskiej Wikipedii. Przy każdej informacji o rybach pokazujemy zdanie, z którego pochodzi.</p>
+      <div class="facts" id="facts" aria-live="polite"><span>Wczytywanie danych…</span></div>
+    </div>
+  </section>
+
+  <section class="app" id="view-lakes" aria-label="Wyszukiwarka jezior">
+    <div class="wrap">
+      <div class="panel finder">
+        <form class="filters" role="search" onsubmit="return false">
+          <div class="field">
+            <label for="f-q">Nazwa jeziora</label>
+            <input type="search" id="f-q" placeholder="np. Śniardwy, Hańcza" autocomplete="off">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-voiv">Województwo</label>
+              <select id="f-voiv"><option value="">Wszystkie</option></select>
+            </div>
+            <div class="field">
+              <label for="f-kind">Rodzaj</label>
+              <select id="f-kind">
+                <option value="">Wszystkie</option>
+                <option value="j">Jeziora</option>
+                <option value="z">Zbiorniki sztuczne</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-fish">Ryba w artykule</label>
+              <select id="f-fish"><option value="">Dowolna</option></select>
+            </div>
+            <div class="field">
+              <label for="f-sort">Kolejność</label>
+              <select id="f-sort">
+                <option value="name">Nazwa</option>
+                <option value="depth">Najgłębsze</option>
+                <option value="area">Największe</option>
+                <option value="fish">Najwięcej gatunków ryb</option>
+              </select>
+            </div>
+          </div>
+          <label class="check" for="f-onlyfish"><input type="checkbox" id="f-onlyfish"><span>Tylko z informacją o rybach</span></label>
+        </form>
+        <div class="result-meta">
+          <span id="result-count" class="num"></span>
+          <button type="button" class="linklike" id="clear-filters" hidden>Wyczyść filtry</button>
+        </div>
+        <ul class="results" id="results" aria-label="Wyniki"></ul>
+        <div class="more" id="more" hidden><button type="button" class="btn" id="more-btn">Pokaż kolejne</button></div>
+      </div>
+
+      <div class="main-col">
+        <figure class="panel chart" aria-labelledby="chart-title">
+          <div class="chart-head">
+            <h2 id="chart-title">Mapa głębokości</h2>
+            <div class="chart-tools">
+              <button type="button" class="btn" id="zoom-in" aria-label="Przybliż">+</button>
+              <button type="button" class="btn" id="zoom-out" aria-label="Oddal">−</button>
+              <button type="button" class="btn" id="zoom-reset">Cała Polska</button>
+            </div>
+          </div>
+          <div class="canvas-box" id="canvas-box">
+            <canvas id="map" role="img" aria-label="Mapa Polski z jeziorami pokolorowanymi według głębokości maksymalnej. Lista po lewej zawiera te same jeziora."></canvas>
+            <div class="tooltip" id="tooltip" hidden></div>
+          </div>
+          <figcaption class="legend"><span class="title">Głębokość maksymalna</span><span id="legend-items"></span></figcaption>
+          <p class="chart-note">Kliknij punkt, żeby otworzyć kartę jeziora. Przeciągnij, żeby przesunąć mapę. Kontur mapy: Natural Earth.</p>
+        </figure>
+
+        <article class="panel sheet" id="sheet" aria-live="polite" aria-labelledby="sheet-title">
+          <p class="sheet-placeholder">Wczytywanie…</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="catches" id="view-catches" aria-labelledby="catches-title" hidden>
+    <div class="wrap catches-wrap">
+      <div class="catches-head">
+        <div>
+          <h1 id="catches-title">Połowy</h1>
+          <p class="muted">Zdjęcia i wymiary ryb dodane przez użytkowników. Wpisów nie weryfikujemy.</p>
+        </div>
+        <button type="button" class="btn btn-primary" id="add-catch" hidden>Dodaj połów</button>
+      </div>
+
+      <form class="panel catch-form" id="catch-form" hidden novalidate>
+        <h2>Nowy połów</h2>
+        <div class="catch-form-grid">
+          <div class="field photo-field">
+            <label for="c-photo">Zdjęcie ryby</label>
+            <input type="file" id="c-photo" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" required>
+            <img id="c-preview" alt="Podgląd wybranego zdjęcia" hidden>
+            <p class="hint">Zdjęcie zmniejszamy do 1600 pikseli, a dane z pliku, w tym położenie GPS, usuwamy przed wysłaniem.</p>
+          </div>
+          <div class="field">
+            <label for="c-species">Gatunek</label>
+            <select id="c-species" required><option value="">Wybierz gatunek</option></select>
+          </div>
+          <div class="field" id="c-species-other-field" hidden>
+            <label for="c-species-other">Nazwa gatunku</label>
+            <input type="text" id="c-species-other" maxlength="40">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="c-length">Długość (cm)</label>
+              <input type="text" id="c-length" inputmode="decimal" autocomplete="off" placeholder="np. 62,5" required>
+            </div>
+            <div class="field">
+              <label for="c-weight">Waga (kg, opcjonalnie)</label>
+              <input type="text" id="c-weight" inputmode="decimal" autocomplete="off" placeholder="np. 2,4">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-lake">Jezioro lub łowisko (opcjonalnie)</label>
+            <input type="text" id="c-lake" list="c-lake-list" maxlength="80" autocomplete="off" placeholder="Zacznij pisać nazwę">
+            <datalist id="c-lake-list"></datalist>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="c-date">Data połowu</label>
+              <input type="date" id="c-date" required>
+            </div>
+            <div class="field">
+              <label for="c-nick">Podpis (opcjonalnie)</label>
+              <input type="text" id="c-nick" maxlength="40" autocomplete="nickname">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-note">Notatka (opcjonalnie)</label>
+            <textarea id="c-note" maxlength="300" rows="2"></textarea>
+          </div>
+          <label class="check" for="c-consent"><input type="checkbox" id="c-consent" required><span>To moje zdjęcie i zgadzam się na jego publikację na tej stronie zgodnie z <a href="regulamin.html" target="_blank">regulaminem</a>.</span></label>
+        </div>
+        <p class="form-error" id="c-error" role="alert" hidden></p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="c-submit">Dodaj połów</button>
+          <button type="button" class="btn" id="c-cancel">Anuluj</button>
+          <span class="form-status" id="c-status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <p class="muted" id="catch-permission" hidden></p>
+
+      <div class="catch-toolbar">
+        <div class="field">
+          <label for="g-species">Gatunek</label>
+          <select id="g-species"><option value="">Wszystkie</option></select>
+        </div>
+        <label class="check" for="g-mine" id="g-mine-label" hidden><input type="checkbox" id="g-mine"><span>Tylko moje</span></label>
+        <span class="lake-chip" id="g-lake" hidden></span>
+        <span class="num muted" id="g-count"></span>
+      </div>
+      <p class="muted" id="g-state">Wczytywanie połowów…</p>
+      <ul class="catch-grid" id="g-grid"></ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Dane o jeziorach: polska Wikipedia, licencja CC BY-SA 4.0, z linkiem do artykułu przy każdym jeziorze. Informacje mają charakter poglądowy: przed wędkowaniem sprawdź zezwolenia i regulamin łowiska.</p>
+    <nav aria-label="Informacje">
+      <a href="o-danych.html">O danych</a>
+      <a href="polityka-prywatnosci.html">Polityka prywatności</a>
+      <a href="regulamin.html">Regulamin</a>
+    </nav>
+  </div>
+</footer>
+<script src="assets/app.js" defer></script>
+<script src="assets/catches.js" defer></script>

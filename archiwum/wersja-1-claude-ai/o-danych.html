@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>O danych · patofishing</title>
+<meta name="description" content="Skąd pochodzą dane o głębokości i rybach w jeziorach na stronie patofishing, jak je sprawdzamy i jak często są odświeżane.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="patofishing, strona główna">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c0-6 5-11 12-11 6 0 10 4 10 9 0 6-5 11-12 11C9 26 5 22 5 17z" fill="var(--d2)"/><path d="M10 17c0-3.5 3-6.5 7-6.5 3.5 0 6 2.4 6 5.3 0 3.6-3 6.7-7 6.7-3.5 0-6-2.3-6-5.5z" fill="var(--d4)"/><path d="M14.5 16.8c0-1.4 1.2-2.6 2.8-2.6 1.4 0 2.4 1 2.4 2.2 0 1.5-1.2 2.7-2.8 2.7-1.4 0-2.4-1-2.4-2.3z" fill="var(--d5)"/></svg>
+      <span>patofishing</span>
+    </a>
+    <nav class="site-nav" aria-label="Główne">
+      <a href="./">Jeziora</a>
+      <a href="o-danych.html" aria-current="page">O danych</a>
+    </nav>
+  </div>
+</header>
+<main class="page">
+  <div class="wrap">
+    <article class="prose">
+      <h1>O danych</h1>
+      <p>Wszystkie informacje o jeziorach pochodzą z artykułów polskiej Wikipedii. Przy każdym jeziorze jest link do artykułu i data wersji, z której skorzystaliśmy, więc każdą liczbę i każdą rybę możesz sprawdzić u źródła.</p>
+
+      <h2>Które jeziora są w bazie</h2>
+      <p>Bierzemy wszystkie artykuły z kategorii „Jeziora w województwie…” i „Sztuczne zbiorniki wodne w województwie…” dla 16 województw, razem z ich podkategoriami. W Polsce jest około 7 tysięcy jezior o powierzchni ponad 1 ha, a artykuł w Wikipedii ma mniej niż połowa z nich. Jeśli jeziora nie ma w Wikipedii, nie ma go też tutaj.</p>
+
+      <h2>Głębokość, powierzchnia i położenie</h2>
+      <p>Odczytujemy je z tabelki (infoboksu) na początku artykułu. Gdy tabelki brakuje, szukamy w tekście zdania w rodzaju „głębokość maksymalna wynosi 12 m” i pokazujemy je obok wyniku. Wartości przepisujemy tak, jak podaje źródło, razem z zakresami, na przykład „24,3-26,7 m”, gdy źródła się różnią.</p>
+      <p>Wartości, które przeczą same sobie, pomijamy i piszemy o tym przy jeziorze. Przykłady: średnia głębokość większa od maksymalnej, powierzchnia większa, niż mieści się w podanej długości linii brzegowej, albo powierzchnia w tabelce zupełnie inna niż w tekście tego samego artykułu.</p>
+
+      <h2>Ryby</h2>
+      <p>Lista ryb przy jeziorze to gatunki <strong>wymienione w artykule</strong>, a nie wynik odłowów kontrolnych. Pod listą pokazujemy zdania, w których te gatunki padają. Rozpoznajemy około 60 gatunków ryb słodkowodnych, z odmianą polskich nazw („szczupak”, „szczupaka”, „szczupakami”) i z linkami do artykułów o rybach.</p>
+      <p>Nie liczymy ryb ze zdań, które:</p>
+      <ul>
+        <li>przeczą występowaniu („nie występuje”, „brak”),</li>
+        <li>opisują przeszłość („dawniej”, „wyginęła”, czas przeszły bez daty z XXI wieku),</li>
+        <li>mówią o nieudanym zarybieniu albo o przepisach (zakazy, limity, wymiary ochronne),</li>
+        <li>dotyczą rzeki, kanału, torfowiska albo sąsiedniego jeziora.</li>
+      </ul>
+      <p>Takie zdania pokazujemy osobno jako wzmianki, których nie liczymy. Typ rybacki jeziora (sielawowy, sandaczowy, leszczowy, linowo-szczupakowy, karasiowy) pokazujemy wtedy, gdy podaje go artykuł.</p>
+
+      <h2>Jak często odświeżamy dane</h2>
+      <p>Co 3 miesiące: 1 lutego, 1 maja, 1 sierpnia i 1 listopada. Skrypt pobiera wtedy aktualne wersje artykułów i buduje bazę od nowa. Nowe dane trafiają na stronę tylko wtedy, gdy przejdą kontrole: liczba jezior nie może spaść o więcej niż 10%, a największe jeziora muszą mieć swoje głębokości.</p>
+
+      <h2>Znalazłeś błąd?</h2>
+      <p>Najlepiej popraw artykuł w Wikipedii. Poprawka pojawi się tutaj przy najbliższej aktualizacji.</p>
+
+      <h2>Połowy</h2>
+      <p>Zdjęcia i wymiary w sekcji Połowy dodają użytkownicy. Nie sprawdzamy ich i nie łączymy z danymi o jeziorach.</p>
+
+      <h2>Licencje</h2>
+      <ul>
+        <li>Treść artykułów Wikipedii i dane z nich wyciągnięte: <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.pl" target="_blank" rel="noopener">CC BY-SA 4.0</a>, autorzy artykułów w Wikipedii.</li>
+        <li>Kontur mapy Polski i krajów sąsiednich: Natural Earth, domena publiczna.</li>
+        <li>Kroje pisma Barlow, Barlow Condensed i Source Serif 4: SIL Open Font License 1.1.</li>
+      </ul>
+    </article>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Dane o jeziorach: polska Wikipedia, licencja CC BY-SA 4.0.</p>
+    <nav aria-label="Informacje">
+      <a href="o-danych.html">O danych</a>
+      <a href="polityka-prywatnosci.html">Polityka prywatności</a>
+      <a href="regulamin.html">Regulamin</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

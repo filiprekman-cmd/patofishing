@@ -1,0 +1,4 @@
+artifact-build/
+__pycache__/
+*.tmp
+patofishing.zip

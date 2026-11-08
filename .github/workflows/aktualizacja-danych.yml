@@ -1,0 +1,61 @@
+# Publishes the site on GitHub Pages and refreshes the lake data every 3 months.
+# Repository settings: Pages -> Build and deployment -> Source: GitHub Actions.
+name: Strona i aktualizacja danych
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 04:17 UTC on 1 February, 1 May, 1 August and 1 November
+    - cron: "17 4 1 2,5,8,11 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        if: github.event_name != 'push'
+        with:
+          python-version: "3.12"
+      - name: Pobierz aktualne dane z Wikipedii
+        if: github.event_name != 'push'
+        env:
+          WIKI_USER_AGENT: "Patofishing/1.0 (https://github.com/${{ github.repository }}) python-urllib"
+        run: python3 scripts/update_data.py
+      - name: Zapisz nowe dane w repozytorium
+        if: github.event_name != 'push'
+        run: |
+          if git diff --quiet -- site/data/lakes.json; then
+            echo "Dane bez zmian."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add site/data/lakes.json
+            git commit -m "Aktualizacja danych o jeziorach"
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
